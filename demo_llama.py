@@ -37,9 +37,10 @@ config = LlamaConfig(
 # --- 3. Инициализируем модель с нуля
 model = LlamaForCausalLM(config)
 
-total_bytes = sum(p.element_size() * p.numel() for p in model.parameters())
+total_bytes = sum(p.numel() for p in model.parameters())
 print(f"Model.params={total_bytes / (1024 ** 2):.2f} MB")
 
+exit(0)
 
 # --- 4. Загружаем датасеты C4 (стриминг, чтобы не грузить весь объем в память)
 # \%User%\.cache\huggingface\hub
