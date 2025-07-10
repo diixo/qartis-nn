@@ -7,6 +7,8 @@ from transformers import GenerationConfig
 model_path = "./llama-160m"
 
 
+########################################################################
+
 def training_args():
     params = torch.load(model_path + "/training_args.bin")
     params = dict(params.__dict__)
@@ -40,5 +42,5 @@ outputs = model.generate(
 
 generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 generated_text = str(generated_text).replace('\n', ' ')
-print("Generated:", generated_text)
 
+print("Generated:", generated_text)
