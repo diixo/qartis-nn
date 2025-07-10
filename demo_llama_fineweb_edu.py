@@ -5,6 +5,8 @@ from datasets import load_dataset, Dataset
 from transformers import Trainer, TrainingArguments, DataCollatorForLanguageModeling
 
 
+max_length=2048
+
 model_path = "./llama-68m"
 
 
@@ -21,7 +23,7 @@ tokenizer.pad_token_id = tokenizer.eos_token_id
 
 print(f"bos={tokenizer.bos_token_id}, pad={tokenizer.pad_token_id}, eos={tokenizer.eos_token_id}")
 
-# --- 2. Создаем конфигурацию модели LLaMA (пример для небольшой модели)
+# --- 2. Create config for LLaMA model
 config = LlamaConfig(
     vocab_size=tokenizer.vocab_size,
     hidden_size=512,            # 768
@@ -34,20 +36,17 @@ config = LlamaConfig(
     pad_token_id=tokenizer.pad_token_id,
 )
 
-# --- 3. Инициализируем модель с нуля
+# --- 3. Initialization from zero
 model = LlamaForCausalLM(config)
 
 total_bytes = sum(p.numel() for p in model.parameters())
 print(f"Model.params={total_bytes / (1024 ** 2):.2f} MB")
 
 
-# --- 4. Загружаем датасеты C4 (стриминг, чтобы не грузить весь объем в память)
+# --- 4. Load dataset (streaming-mode, to avoid VRAM overload )
 # \%User%\.cache\huggingface\hub
 dataset = load_dataset("HuggingFaceFW/fineweb-edu", data_files="sample/10BT/*.parquet", split="train", streaming=False)
 
-exit(0)
-
-max_length=2048
 
 print("Tokenizing dataset...")
 def tokenize_function(examples):
@@ -58,7 +57,7 @@ tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=
 print("Preparing data collator...")   # mlm=False, т.к. это causal LM
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# --- 9. Конфиг для обучения
+# --- 9. Config for training
 training_args = TrainingArguments(
     output_dir="./llama_from_scratch",
     overwrite_output_dir=True,
@@ -77,7 +76,7 @@ training_args = TrainingArguments(
     eval_steps=None
 )
 
-# --- 10. Создаем Trainer
+# --- 10. Create Trainer
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -86,5 +85,5 @@ trainer = Trainer(
     tokenizer=tokenizer,
 )
 
-# --- 11. Запускаем обучение
-#trainer.train()
+# --- 11. Run training
+trainer.train()
