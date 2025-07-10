@@ -3,3 +3,4 @@
 /.idea
 
 *model.bin
+*model.safetensors
