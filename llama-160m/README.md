@@ -9,4 +9,4 @@ This is a LLaMA-like model with only 160M parameters trained on Wikipedia and pa
 
 No evaluation has been conducted yet, so use it with care.
 
-Original source: `https://huggingface.co/JackFram/llama-160m`
+Original source: https://huggingface.co/JackFram/llama-160m
