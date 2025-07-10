@@ -16,6 +16,7 @@ def training_args():
 #training_args()
 
 tokenizer = AutoTokenizer.from_pretrained(model_path) # = LlamaTokenizer
+tokenizer.pad_token_id = tokenizer.eos_token_id
 
 
 print(f"bos={tokenizer.bos_token_id}, pad={tokenizer.pad_token_id}, eos={tokenizer.eos_token_id}")
