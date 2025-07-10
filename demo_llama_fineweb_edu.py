@@ -23,9 +23,9 @@ print(f"bos={tokenizer.bos_token_id}, pad={tokenizer.pad_token_id}, eos={tokeniz
 # --- 2. Создаем конфигурацию модели LLaMA (пример для небольшой модели)
 config = LlamaConfig(
     vocab_size=tokenizer.vocab_size,
-    hidden_size=768,
-    intermediate_size=3072,
-    num_attention_heads=12,
+    hidden_size=512,            # 768
+    intermediate_size=2048,     # 3072
+    num_attention_heads=8,      # 12
     num_hidden_layers=4,
     max_position_embeddings=2048,
     bos_token_id=tokenizer.bos_token_id,
