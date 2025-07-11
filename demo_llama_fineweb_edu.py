@@ -54,7 +54,7 @@ def tokenize_function(examples):
 
 tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 
-print("Preparing data collator...")   # mlm=False, т.к. это causal LM
+print("Preparing data collator...")   # mlm=False
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 # --- 9. Config for training
