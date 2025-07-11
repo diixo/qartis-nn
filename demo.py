@@ -20,7 +20,7 @@ def training_args():
 gen_config = GenerationConfig.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path) # = LlamaTokenizer
 
-model = AutoModelForCausalLM.from_pretrained(model_path)
+model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto",)
 
 total_bytes = sum(p.numel() for p in model.parameters())
 print(f"Model.params={total_bytes / (1000 ** 2):.2f} MB")
@@ -44,3 +44,5 @@ generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 generated_text = str(generated_text).replace('\n', ' ')
 
 print("Generated:", generated_text)
+
+print(f"bos={tokenizer.bos_token_id}, eos={tokenizer.eos_token_id}, pad={tokenizer.pad_token_id}")
